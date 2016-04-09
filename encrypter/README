@@ -1,0 +1,5 @@
+A very simple encrypter, which uses GPG and a trivial algorithm to create
+some files with random information, unique to each student on the class.
+It should automate the tedious process of obtaining each student's unique
+ID assigned by the university, and creating each encrypted file manually.
+Inherently usable only by UFSC students.
