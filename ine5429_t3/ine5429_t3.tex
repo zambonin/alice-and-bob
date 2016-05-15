@@ -1,0 +1,145 @@
+\documentclass{article}
+
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper, margin=1.5cm]{geometry}
+\usepackage[colorlinks, urlcolor=blue, citecolor=red]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts, mathtools}
+
+\title{\textbf{Protocolo de Acordo de Chaves de Diffie-Hellman}}
+\author{Gustavo Zambonin\thanks{\texttt{gustavo.zambonin@grad.ufsc.br} ---
+todos os algoritmos utilizados podem ser encontrados
+também \href{https://github.com/zambonin/ufsc-ine5429}{neste repositório}.} \\
+\small {Segurança em Computação (UFSC -- INE5429)} \vspace{-5mm}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{itemize}
+
+\item Originalmente publicado em 1975, o \emph{protocolo de acordo de chaves
+Diffie--Hellman} (DH) \cite{Diffie:2006:NDC:2263321.2269104} habilita duas
+entidades a estabelecerem uma \emph{chave secreta} mesmo que estas não tenham se
+comunicado previamente, com o benefício desta troca de dados poder ser
+monitorada sem que tal chave seja descoberta. Esta pode ser utilizada,
+possivelmente, em um algoritmo de cifragem simétrico, de modo a habilitar a
+troca de mensagens criptografadas entre as entidades. Uma distinção importante é
+que \emph{nenhuma} informação é trocada além das inerentes ao processo de
+criação de chave -- assim sendo, o protocolo DH \emph{não} é classificado como
+um algoritmo de criptografia assimétrica.
+
+Uma descrição matemática pode ser resumida da seguinte maneira: sejam Alice e
+Bob as entidades em questão; um número primo $g$ e uma de suas raízes primitivas
+$p$, ambos suficientemente grandes (e geralmente publicamente padronizados
+\cite{rfc5114}) são escolhidos por Alice e Bob. Cada uma das entidades gera
+um número secreto para si, chamados de $X_A$ e $X_B$; Alice calcula $A = g^{X_A}
+\pmod{p}$ e envia para Bob; do mesmo modo, $B = g^{X_B} \pmod{p}$ é enviado para
+Alice por Bob. Assim, as únicas trocas propostas são efetuadas e as entidades já
+compartilham uma chave secreta.
+
+Esta reside no cálculo de $B^{X_A} \pmod{p}$ por Alice e $A^{X_B} \pmod{p}$ por
+Bob. Expandindo os números recebidos, temos $(g^{X_A} \pmod{p})^{X_B} \pmod{p}$
+e $(g^{X_B} \pmod{p})^{X_A} \pmod{p}$ respectivamente; é possível reduzir estes
+números, através de aritmética modular, para $g^{X_A X_B} \pmod{p}$ e $g^{X_B
+X_A} \pmod{p}$; nota-se a igualdade dos termos, em virtude da comutatividade da
+operação de multiplicação sob os números reais. Assim, Alice nunca soube o
+número secreto de Bob e vice-versa, e a chave secreta nunca foi transmitida,
+porém é conhecida por ambos.
+\begin{align*}
+Alice \overset{A}{\longrightarrow} Bob \\
+Alice \overset{B}{\longleftarrow} Bob
+\end{align*}
+Utilizando um exemplo numérico, supõe-se que Alice e Bob concordam em usar o
+número primo $p = 1949$ e sua raiz primitiva $g = 1475$. Seus números secretos
+são, respectivamente, $X_A = 128$ e $X_B = 64$. O segredo compartilhado é
+chamado de $s$.
+\begin{align*}
+A &= g^{X_A} \pmod{p} = 1475^{128} \pmod{1979} = 448 \\
+B &= g^{X_B} \pmod{p} = 1475^{64} \pmod{1979} = 872 \\
+s &= B^{X_A} \pmod{p} = 872^{128} \pmod{1979}
+   = A^{X_B} \pmod{p} = 448^{64} \pmod{1979} = 560
+\end{align*}
+Estas computações podem ser realizadas rapidamente com um interpretador Python,
+pois a linguagem implementa exponenciação modular\footnote{operação do tipo
+$d = a^b \pmod{c}$ onde a exponenciação, um passo extremamente custoso se $a$ e
+$b$ forem números relativamente grandes, não precisa ser calculada. O resultado
+$d$ é a inversa multiplicativa de $a \pmod{c}$.}.
+
+\begin{verbatim}
+>>> pow(1475, 128, 1979)
+448
+>>> pow(1475, 64, 1979)
+872
+>>> pow(448, 64, 1979)
+560
+>>> pow(872, 128, 1979) == pow(448, 64, 1979)
+True
+\end{verbatim}
+
+\item O programa que implementa DH está localizado em
+\texttt{diffie\_hellman.py}, e o acordo de chaves automatizado, em
+\texttt{key\_exchange.py}. Este programa apresentará falha (e saída)
+\emph{apenas} se a chave secreta não for igual para ambas as entidades,
+consequência de algum processo matemático anômalo. É importante notar que os
+números e suas raízes primitivas foram computados utilizando algoritmos
+implementados pelo autor em trabalhos passados, porém os segredos de cada
+entidade foram computados utilizando o gerador de números aleatórios da
+linguagem, similar ao implementado.
+
+O tamanho de $\approx 80$ bits obtido para os números primos aleatórios acontece
+pois a extração de raízes primitivas é um processo custoso; depois de
+otimizações no cálculo da função totiente de Euler e da utilização de uma
+implementação alternativa da linguagem
+Python\footnote{\href{http://pypy.org/}{PyPy} --- o principal recurso
+apresentado é a utilização de um compilador JIT (\emph{just-in-time}).},
+percebeu-se que uma abordagem diferente seria necessária para que tal processo
+fosse acelerado, como uma mudança de linguagem de programação, e assim todo o
+ecossistema já construído para o trabalho precisaria ser refeito. Portanto, a
+prova de conceito é demonstrada com números de tamanho reduzido.
+
+\item Um ataque do tipo \emph{man-in-the-middle} existe quando uma entidade
+monitora secretamente a comunicação entre duas outras entidades, podendo alterar
+as mensagens entre elas, simulando uma impersonificação dupla simultânea; como o
+protocolo DH original não contém qualquer tipo de autenticação dos usuários, ele
+torna-se vulnerável a este tipo de ataque. Caso o atacante, chamado de Eve,
+consiga obter as chaves parciais $A$ e $B$ de Alice e Bob, então é possível que
+ele crie uma chave secreta com cada um deles e simule a troca de mensagens
+direta caso o canal não seja seguro o suficiente. Sejam as entidades Alice, Bob
+e Eve, seus números secretos $X_A = 128$, $X_B = 64$ e $X_E = 32$, $p = 1949$ e
+$g = 1475$. O segredo compartilhado entre Alice e Eve é chamado de $s_{ae}$, e
+entre Eve e Bob, $s_{eb}$.
+\begin{align*}
+A &= g^{X_A} \pmod{p} = 1475^{128} \pmod{1979} = 448 \\
+E &= g^{X_E} \pmod{p} = 1475^{32} \pmod{1979} = 542 \\
+B &= g^{X_B} \pmod{p} = 1475^{64} \pmod{1979} = 872 \\
+s_{ae} &= E^{X_A} \pmod{p} = 542^{128} \pmod{1979}
+        = A^{X_E} \pmod{p} = 448^{32} \pmod{1979} = 560 \\
+s_{eb} &= E^{X_B} \pmod{p} = 542^{64} \pmod{1979}
+        = B^{X_E} \pmod{p} = 872^{32} \pmod{1979} = 322
+\end{align*}
+Um diagrama segue abaixo, mostrando uma mensagem $M$ e uma mensagem alterada por
+Eve $M'$ a partir do ataque descrito (decodificada com $s_{ae}$ e codificada com
+$s_{eb}$).
+\begin{align*}
+Alice \overset{A}{\longrightarrow} Eve \overset{A}{\longrightarrow} Bob \\
+Alice \overset{E}{\longleftarrow} Eve \overset{B}{\longleftarrow} Bob \\
+Alice \overset{M}{\longrightarrow} Eve \overset{M'}{\longrightarrow} Bob
+\end{align*}
+
+\item Se $g$ não for uma raiz primitiva módulo $p$, então $g$ gerará apenas um
+subgrupo do grupo multiplicativo $\mathbb{Z}/p\mathbb{Z}$, e assim a segurança
+do protocolo será proporcional à \emph{ordem} de $g$ em
+$\mathbb{Z}/p\mathbb{Z}$, onde o ideal seria a ordem total do grupo. Para que
+esse aspecto seja contornado, um número suficientemente grande é escolhido para
+que a ordem de seu subgrupo seja consequemente afetada, e assim, um nível de
+segurança plausível seja obtido.
+
+\end{itemize}
+
+\bibliography{ine5429_t3}
+\bibliographystyle{plain}
+
+\end{document}
