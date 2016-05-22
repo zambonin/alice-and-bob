@@ -1,0 +1,167 @@
+\documentclass{article}
+
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper, margin=1.5cm]{geometry}
+\usepackage[colorlinks, urlcolor=blue, citecolor=red]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts, mathtools}
+
+\title{\textbf{O algoritmo RSA}}
+\author{Gustavo Zambonin\thanks{\texttt{gustavo.zambonin@grad.ufsc.br} ---
+todos os algoritmos utilizados podem ser encontrados
+também \href{https://github.com/zambonin/ufsc-ine5429}{neste repositório}.} \\
+\small {Segurança em Computação (UFSC -- INE5429)} \vspace{-5mm}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{itemize}
+
+\item O algoritmo conhecido como RSA, publicado em 1978 por Rivest, Shamir e
+Adleman, é uma das implementações de criptografia assimétrica mais utilizadas
+até o presente momento. É baseado na dificuldade de fatorar o produto de dois
+grandes números primos. Pares de chaves gerados de acordo com estes fatores
+primos são facilmente computáveis, onde a chave \emph{pública}
+$K_{Pu} = (e, n)$ é compartilhada e a chave \emph{privada} $K_{Pr} = (d, n)$ é
+guardada. Revelar a chave pública não faz com que seja fácil computar a chave
+privada, e assim, apenas uma entidade pode decodificar mensagens codificadas
+com sua própria chave pública e enviadas a ela.
+
+Para gerar um par de chaves, escolhe-se um par de primos $p$ e $q$ aleatórios,
+com um grande número de dígitos, e sua multiplicação $n = p \cdot q$ é
+calculada. A parte $d$ da chave privada $K_{Pr}$ é um número igualmente
+aleatório e grande, mas relativamente primo a $\phi(n) = (p-1) \cdot (q-1)$, o
+que significa $mdc\footnote{`'mdc`' quer dizer `'máximo divisor comum`'.}
+(d, \phi(n)) = 1$. A parte $e$ da chave pública obtém-se a partir da inversa
+multiplicativa\footnote{a inversa multiplicativa modular de um inteiro $a$
+módulo $m$ é um inteiro $x$ tal que $a \cdot x \equiv 1 \pmod{m}$, ou seja, a
+inversa multiplicativa no anel de inteiros $\mathbb{Z}_m$.} de $d$, ou seja,
+$e \cdot d \equiv 1 \pmod{\phi(n)}$. Por fim, para codificar uma mensagem $M$,
+transforma-se esta em um inteiro no intervalo $[0, n-1]$ (talvez seja
+necessário quebrá-la em blocos). Então, o texto cifrado $C$ é obtido a partir
+de $M^{e} \pmod{n}$. Para decifrá-lo, o cálculo $C^{d} \pmod{n}$ deve ser
+realizado. A prova para $M^{e \cdot d} \equiv M$ módulo $n$ pode ser encontrada
+na publicação original \cite{Rivest:1978:MOD:359340.359342}.
+
+\item Seja $p = 211$ e $q = 257$, então $n = 211 \cdot 257 = 54227$ e $\phi(n)
+= 210 \cdot 256 = 53760$. Um inteiro $d$ relativamente primo a $\phi(n)$ é
+$46937$, e $46937^{-1} \pmod{53760} = e = 15593$ (e claramente,
+$46937 \cdot 15593 \equiv 1 \pmod{53760}$). Assim, $K_{Pr} = (46937, 54227)$ e
+$K_{Pu} = (15593, 54227)$. Para uma mensagem $M = 26706$,
+$C = 26706^{15593} \pmod{54227} = 46137$. Decodificando-a, temos
+$46137^{46937} \pmod{54227} = 26706 = M$.
+
+\item O arquivo \texttt{rsa.py} contém a definição do algoritmo, bem como
+métodos para codificar e decodificar uma mensagem numérica ou alfabética. É
+possível criar um objeto desta classe a partir de dois números primos.
+Demonstra-se que o exemplo numérico acima funciona:
+\begin{verbatim}
+$ python
+>>> from rsa import RSA
+>>> x = RSA(211, 257)
+>>> msg = 26706
+>>> enc_m = x.encrypt(msg)
+>>> dec_m = x.decrypt(enc_m)
+>>> m == dec_m
+True
+\end{verbatim}
+O arquivo \texttt{gen\_keys.py} gera chaves aleatórias de tamanho 64 a 4096
+bits, e sua saída é mostrada abaixo. As chaves podem demorar para serem geradas,
+visto que o teste de primalidade utilizado não é otimizado, e os números
+aleatórios escolhidos podem ser regularmente compostos.
+\begin{verbatim}
+$ python gen_keys.py
+Time: 0:00:00.154982    Bits: 64
+Your public key is (65537, 151254871353365631738969393097832317579).
+Your private key is (134026166733793871627904075465999672833,
+                     151254871353365631738969393097832317579).
+
+Time: 0:00:00.769706    Bits: 128
+Your public key is (65537,
+19323857606761134584558674148420836059734690590591127500811261470953459710357).
+Your private key is
+(10872452590013428699376177587452430060186552196216297793977697260690848668353,
+19323857606761134584558674148420836059734690590591127500811261470953459710357).
+
+Time: 0:00:04.451425    Bits: 256
+Your public key is (65537,
+3434463518965078513606416526696086578240082645183966708143959597395443093000469
+567262638771670412889122533271450283064482677687953159270407122968119312127).
+Your private key is
+(339479296822493837239152940475414633776939063056010136798397397987818794825156
+050793145412792664293031135256476236043658961078034860024492868690619730913,
+3434463518965078513606416526696086578240082645183966708143959597395443093000469
+567262638771670412889122533271450283064482677687953159270407122968119312127).
+...
+\end{verbatim}
+
+\end{itemize}
+
+\subsection*{Questionário}
+
+\begin{itemize}
+
+\item A função totiente de Euler, representada por $\phi(n)$, pode ser definida
+como o número de inteiros $k$ tal que $mdc(n, k) = 1$ em $1 \leq k \leq n$, ou
+seja, a contagem de todos os inteiros nesse intervalo que são primos entre si.
+
+\item Como deve ser teoricamente impossível obter uma chave privada de uma
+chave pública, o uso de $n$ como módulo para os expoentes habilitaria qualquer
+entidade a obter a chave privada a partir da pública com o cálculo da inversa
+multiplicativa. Supondo que $e$ é a chave pública e $d$ é a chave privada,
+então caso o módulo $n$ fosse utilizado,
+$ed \equiv 1 \pmod{n} \longrightarrow d \equiv e^{-1} \pmod{n}$. O módulo
+$\phi(n)$ é utilizado pela dificuldade de ser computado dado apenas $n$, mas
+trivialmente descoberto se os fatores $p \cdot q = n$ forem conhecidos, pois
+$\phi(n) = \phi(pq) = \phi(p) \cdot \phi(q) = (p - 1) \cdot (q - 1)$.
+
+\item PKCS\#1 (\emph{Public-Key Cryptography Standards} nº 1) contém definições
+básicas e recomendações para implementar o RSA, bem como propriedades
+matemáticas de chaves públicas e privadas, sintaxe de estruturas relativas à
+criptografia, e algoritmos para codificação/decodificação de texto, e produção
+e verificação de assinaturas.
+
+\item Embora não seja recomendado cifrar grandes mensagens com o RSA por conta
+de sua velocidade de cifragem, tamanho da mensagem cifrada final, e
+simplesmente falta de uso desta estratégia, é possível realizar este
+procedimento a partir de encadeamento de blocos (CBC -- \emph{cipher block
+chaining}). O uso mais difundido do RSA acontece junto a um algoritmo de
+criptografia assimétrica como o AES, deste modo: seja uma mensagem $M$, uma
+chave $K_{AES}$ aleatoriamente gerada, e $K_{RSA_{Pu}}$ a chave pública do
+destinatário. Então, o texto cifrado $C_{M}$ contém a mensagem cifrada com
+$K_{AES}$, e $C_{K}$ contém $K_{AES}$ cifrado com $K_{RSA_{Pu}}$. Enviando
+$C_{M}$ e $C_{K}$ por um canal seguro, o destinatário pode decifrar $C_{K}$
+com sua chave privada $K_{RSA_{Pr}}$, e obter $K_{AES}$ para decifrar $C_{M}$.
+
+\item Existem diversos possíveis ataques ao RSA, que podem ser classificados em
+quatro categorias; ataques elementares, que exploram o mau uso do algoritmo,
+ataques a pequenos expoentes privados, ataques a pequenos expoentes públicos, e
+ataques à implementação do RSA. \cite{Boneh99twentyyears} O ataque mais direto
+que pode ser executado, até o momento, é a fatoração do módulo $n = p \cdot q$,
+a partir do algoritmo GNFS (\emph{General Number Field Sieve}). Também é
+possível, por exemplo, descobrir chaves públicas e privadas que utilizam o
+mesmo módulo -- o ataque do módulo em comum, realizado aplicando o Teorema
+Chinês do Resto.
+
+\item O uso de números aleatórios, gerados a partir de um gerador
+criptograficamente seguro, é extremamente importante para que $p$ e $q$ sejam
+escolhidos de modo que não possam ser fatorados; por exemplo, caso duas chaves
+públicas contenham um fator em comum, torna-se trivial encontrar o outro fator.
+
+\item O tamanho desejável para uma chave é de, no mínimo, 2048 bits. No final
+de 2009, uma chave de 768 bits foi fatorada
+\cite{Kleinjung:2010:FRM:1881412.1881436}, e demonstrou-se que na próxima
+década, será possível fatorar chaves de 1024 bits por conta do poder
+computacional crescente. Assim, chaves de 2048 e 4096 serão seguras por muitos
+anos em computadores clássicos, dado esforço apenas acadêmico; o mesmo não pode
+ser afirmado para computadores quânticos.
+
+\bibliography{ine5429_t4}
+\bibliographystyle{plain}
+
+\end{itemize}
+
+\end{document}
