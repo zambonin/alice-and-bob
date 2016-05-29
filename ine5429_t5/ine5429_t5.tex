@@ -180,19 +180,18 @@ ser fatorado para o produto de outros dois polinômios não-constantes. Esta
 propriedade depende do corpo ou anel que os polinômios pertencem.
 
 \item A adição é realizada entre termos do mesmo grau. Porém, já que os
-polinômios pertencem ao corpo finito $GF(2^m)$, os coeficientes devem
-pertencer às classes de congruência módulo $2$, e o resultado final deve ser
-reduzido para o grau máximo $m - 1$ com uma operação de divisão pelo polinômio
-primitivo do corpo finito. A multiplicação utiliza a propriedade usual da
-distributividade, e o resultado também deve ser reduzido de acordo com as
-regras acima.
+polinômios pertencem ao corpo finito $GF(2^m)$, os coeficientes devem pertencer
+às classes de congruência módulo $2$. A multiplicação utiliza a propriedade
+usual da distributividade, e o resultado final deve ser reduzido para o grau
+máximo $m - 1$ com uma operação de divisão pelo polinômio primitivo do corpo
+finito, além da redução de coeficientes.
 
 \item Tomando o polinômio primitivo $x^8 + x^4 + x^3 + x + 1$, deseja- se
 resolver $(x^7 + x^5 + x^4 + x^2 + x) \cdot (x^6 + x^4 + x + 1)$ sobre
 $GF(2^8)$.
 \begin{multline*}
 (x^7 + x^5 + x^4 + x^2 + x) \cdot (x^6 + x^4 + x + 1) = \\
-= x^{13} + 2x^{11} + x^{10} + 2x^9 + 3x^8 + 2x^7
+= x^{13} + 2x^{11} + x^{10} + x^9 + 3x^8 + 2x^7
 + 2x^6 + 3x^5 + x^4 + x^3 + 2x^2 + x \\
 = x^{13} + x^{10} + x^9 + x^8 + x^5 + x^4 + x^3 + x
 \pmod{x^8 + x^4 + x^3 + x + 1}
