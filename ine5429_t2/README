@@ -1,0 +1,3 @@
+A very, very slow primitive roots generator. The code contains the recursive
+Euclidean GCD algorithm, an implementation of the Euler's totient function and
+a naïve prime factorization algorithm.

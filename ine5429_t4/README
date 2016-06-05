@@ -1,0 +1,3 @@
+The RSA public-key cryptosystem is implemented within this folder, along with
+a script to generate random keys with up to 4096 bits of length, using the
+Fermat probabilistic primality test.

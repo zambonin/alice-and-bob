@@ -1,0 +1,3 @@
+An implementation for the Diffie-Hellman key exchange method. The script
+asserts if the calculations are correct with some random numbers generated
+from the earlier implementation of a MT19937.
