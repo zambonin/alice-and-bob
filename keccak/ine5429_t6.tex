@@ -1,0 +1,78 @@
+\documentclass{article}
+
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper, margin=1.5cm]{geometry}
+\usepackage[colorlinks, urlcolor=blue]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+
+\title{\textbf{A função \emph{hash} criptográfica SHA-3}}
+\author{Gustavo Zambonin\thanks{\texttt{gustavo.zambonin@grad.ufsc.br} ---
+todos os algoritmos utilizados podem ser encontrados
+também \href{https://github.com/zambonin/ufsc-ine5429}{neste repositório}.} \\
+\small {Segurança em Computação (UFSC -- INE5429)} \vspace{-5mm}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{itemize}
+
+\item Uma \emph{função hash criptográfica}, ou função de resumo criptográfica,
+é um algoritmo matemático que mapeia uma quantidade de bytes
+qualquer\footnote{algumas funções desse tipo têm limites quanto ao tamanho da
+entrada, embora estes sejam extremamente grandes.} para uma palavra de tamanho
+fixo.
+
+Para que seja resistente a diversos tipos de criptoanálise, uma função de resumo
+criptográfica $H : X \longrightarrow Y$ deve respeitar algumas propriedades:
+
+\begin{enumerate}[label=\roman*.]
+
+\item \emph{Resistência à pré-imagem}: Para um resumo $M' \in Y$, é
+computacionalmente impraticável\footnote{o tempo ou recursos gastos para esta
+computação excedem a validade ou utilidade da informação desejada.} encontrar a
+mensagem $M \in X$ tal que $H(M) = M'$. Uma função matemática com esta
+propriedade é chamada de unidirecional.
+
+\item \emph{Resistência à segunda pré-imagem}: Para uma mensagem $M_0 \in X$,
+é computacionalmente impraticável encontrar uma segunda mensagem $M_1 \in X$
+tal que $M_0 \neq M_1$ e $H(M_0) = H(M_1)$.
+
+\item \emph{Resistência à colisão}: Para duas mensagens $M_0, M_1 \in X$, é
+computacionalmente impraticável encontrar $M_0 \neq M_1$ e $H(M_0) = H(M_1)$.
+
+\end{enumerate}
+
+É importante notar que, embora as definições sejam extremamente parecidas,
+resistência à segunda pré-imagem e resistência à colisão são conceitos
+diferentes; um atacante não consegue escolher a primeira mensagem caso queira
+atacar a resistência à segunda pré-imagem; para a resistência à colisão, o
+atacante pode escolher livremente o par de mensagens.
+
+Algumas aplicações destas funções são enumeradas abaixo:
+
+\begin{itemize}
+
+\item Podem ser utilizadas para verificar a integridade da mensagem, comparando
+resumos criptográficos calculados antes e depois da transmissão de mensagem
+e/ou arquivos.
+
+\item Para evitar o armazenamento de senhas em texto claro, é possível
+armazenar apenas o resumo criptográfico de cada senha e compará-lo na
+autenticação do usuário.
+
+\item Resumos criptográficos são comumente descritos como identificadores únicos
+seguros para um arquivo ou informação digital (por exemplo, \emph{commits} em um
+sistema de controle de versão).
+
+\end{itemize}
+
+\end{itemize}
+
+\bibliography{ine5429_t6}
+\bibliographystyle{plain}
+
+\end{document}
