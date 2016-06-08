@@ -18,9 +18,11 @@ também \href{https://github.com/zambonin/ufsc-ine5429}{neste repositório}.} \\
 
 \maketitle
 
+\section{Definições}
+
 \begin{itemize}
 
-\item Uma \emph{função hash criptográfica}, ou função de resumo criptográfica 
+\item Uma \emph{função hash criptográfica}, ou função de resumo criptográfica
 (futuramente denotada por $h$), é um algoritmo matemático que mapeia uma
 quantidade de bytes qualquer\footnote{algumas funções desse tipo têm
 limites quanto ao tamanho da entrada, embora estes sejam extremamente
@@ -53,12 +55,12 @@ diferentes; um atacante não consegue escolher a primeira mensagem caso queira
 atacar a resistência à segunda pré-imagem; para a resistência à colisão, o
 atacante pode escolher livremente o par de mensagens.
 
-Algumas aplicações destas funções são enumeradas abaixo:
+\item Algumas aplicações destas funções são enumeradas abaixo:
 
 \begin{itemize}
 
 \item Podem ser utilizadas para verificar a integridade da mensagem, comparando
-resumos criptográficos calculados antes e depois da transmissão de mensagem e/ou 
+resumos criptográficos calculados antes e depois da transmissão de mensagem e/ou
 arquivos.
 
 \item Para evitar o armazenamento de senhas em texto claro, é possível
@@ -71,7 +73,7 @@ sistema de controle de versão).
 
 \end{itemize}
 
-O padrão SHA-3, descrito pelo documento FIPS 202 \cite{Dworkin2015},
+\item O padrão SHA-3, descrito pelo documento FIPS 202 \cite{Dworkin2015},
 é baseado em uma instância do algoritmo \textsc{Keccak}, selecionado
 pelo NIST (\emph{National Institute of Standards and Technology}).
 Este documento também especifica a família \textsc{Keccak}$-p$ de

@@ -83,21 +83,21 @@ discutidos são o teste de \emph{Fermat} e o teste de \emph{Miller-Rabin}.
 
 O Pequeno Teorema de Fermat diz que, se $p$ é primo e $0 < a < p$, então
 \begin{align*}
-a^{p-1} \equiv 1 \; (\textrm{mod } p)
+a^{p-1} \equiv 1 \pmod{p}
 \end{align*}
 Deseja-se testar se $p$ é primo, então é possível escolher inteiros $a$
 aleatórios no intervalo possível e verificar se a congruência é válida. Se
 isto acontecer para muitos valores de $a$, então $p$ \emph{provavelmente} é um
 primo. De modo contrário, se um inteiro $a$ gera uma incongruência da forma
-\begin{align*}a^{p-1} \not\equiv 1 \; (\textrm{mod } p)\end{align*}
+\begin{align*}a^{p-1} \not\equiv 1 \pmod{p}\end{align*}
 então $a$ é uma \emph{testemunha} do fato de que $p$ é composto.
 
 O teste de Miller-Rabin adiciona facetas a este teorema: seja um primo $p$
 onde $p > 2$. $p - 1$ é um número par, e pode ser escrito como $2^s d$ ($s,
 d$ inteiros e $d$ ímpar). É possível verificar que um número não é primo se
 \begin{align*}
-a^d \not\equiv 1 \; (\textrm{mod } p) \textrm{ e }
-a^{2^{r}d} \not\equiv -1 \; (\textrm{mod } p) \;\forall\; (0 \leq r \leq s-1)
+a^d \not\equiv 1 \pmod{p} \land
+a^{2^{r}d} \not\equiv -1 \pmod{p} \; \forall \; (0 \leq r \leq s-1)
 \end{align*}
 de modo que $a$ novamente é uma testemunha. Procede-se da mesma maneira,
 escolhendo inteiros $a$ aleatoriamente. Se qualquer uma das congruências acima
