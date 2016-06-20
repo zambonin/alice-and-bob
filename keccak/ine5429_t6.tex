@@ -2,22 +2,42 @@
 
 \usepackage[brazil]{babel}
 \usepackage[T1]{fontenc}
-\usepackage[a4paper, margin=1.5cm]{geometry}
+\usepackage[a4paper, left=1.5cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}
 \usepackage[colorlinks, urlcolor=blue, citecolor=red]{hyperref}
 \usepackage[utf8]{inputenc}
 \usepackage[pdftex]{graphicx}
-\usepackage{amsfonts, amsmath, enumitem, float, subcaption}
+\usepackage{amsfonts, amsmath, enumitem, fancyhdr, float, subcaption}
 
-\title{\textbf{A função \emph{hash} criptográfica SHA-3}}
-\author{Gustavo Zambonin\thanks{\texttt{gustavo.zambonin@grad.ufsc.br} ---
-todos os algoritmos utilizados podem ser encontrados
-também \href{https://github.com/zambonin/ufsc-ine5429}{neste repositório}.} \\
-\small {Segurança em Computação (UFSC -- INE5429)} \vspace{-5mm}}
+\pagestyle{fancy}
+
+\fancyhead{}
+\fancyfoot[L]{\href{https://github.com/zambonin/ufsc-ine5429}{\texttt{src/}}}
+\fancyfoot[C]{\itshape\nouppercase{\leftmark}}
+\fancyfoot[R]{\thepage}
+
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.75pt}
+
+\fancypagestyle{firststyle} {
+    \renewcommand{\headrulewidth}{0.75pt}
+    \fancyhead[L]{UFSC -- INE5429}
+    \fancyhead[C]{Gustavo Zambonin}
+    \fancyhead[R]{\footnotesize{\texttt{gustavo.zambonin@grad.ufsc.br}}}
+}
+
+\title{\vspace{-1.5cm}
+    \Large{\textbf{
+        A função \emph{hash} criptográfica SHA-3
+    }}\vspace{-1.5cm}
+}
+\author{}
 \date{}
 
 \begin{document}
 
 \maketitle
+
+\thispagestyle{firststyle}
 
 \section{Definições}
 
@@ -37,8 +57,8 @@ $h : X \longrightarrow Y$ deve respeitar algumas propriedades:
 
 \item \emph{Resistência à pré-imagem}: Para um resumo $M' \in Y$, é
 computacionalmente impraticável\footnote{o tempo ou recursos gastos para esta
-computação excedem a validade ou utilidade da informação desejada.} encontrar a
-mensagem $M \in X$ tal que $h(M) = M'$. Uma função matemática com esta
+computação excedem a validade ou utilidade da informação desejada.} encontrar
+a mensagem $M \in X$ tal que $h(M) = M'$. Uma função matemática com esta
 propriedade é chamada de unidirecional.
 
 \item \emph{Resistência à segunda pré-imagem}: Para uma mensagem $M_0 \in X$,
@@ -61,16 +81,16 @@ atacante pode escolher livremente o par de mensagens.
 \begin{itemize}
 
 \item Podem ser utilizadas para verificar a integridade da mensagem, comparando
-resumos criptográficos calculados antes e depois da transmissão de mensagem e/ou
-arquivos.
+resumos criptográficos calculados antes e depois da transmissão de mensagem
+e/ou arquivos.
 
 \item Para evitar o armazenamento de senhas em texto claro, é possível
 armazenar apenas o resumo criptográfico de cada senha e compará-lo na
 autenticação do usuário.
 
-\item Resumos criptográficos são comumente descritos como identificadores únicos
-seguros para um arquivo ou informação digital (por exemplo, \emph{commits} em um
-sistema de controle de versão).
+\item Resumos criptográficos são comumente descritos como identificadores
+únicos seguros para um arquivo ou informação digital (por exemplo,
+\emph{commits} em um sistema de controle de versão).
 
 \end{itemize}
 
@@ -97,12 +117,33 @@ configurável pelo usuário. Esse processo pode ser observado na figura
 \ref{fig:sponge}.
 
 \item A permutação $f$ é descrita como uma sequência de operações num estado
-$A$, que é um vetor de elementos tridimensional em $GF(2)$, chamado de $A$. $f$
-é uma permutação iterativa, consistindo de uma sequência de rodadas $R$. Uma
-rodada consiste da composição de cinco etapas, ilustradas em \ref{fig:steps}:
-\begin{align*}
-R = \iota \circ \chi \circ \pi \circ \rho \circ \theta
-\end{align*}
+$A$, que é um vetor de elementos tridimensional em $GF(2)$, chamado de $A$.
+$f$ é uma permutação iterativa, consistindo de uma sequência de rodadas $R$.
+Uma rodada $R$ consiste da composição de cinco etapas:
+$R = \iota \circ \chi \circ \pi \circ \rho \circ \theta$, como visto
+em \ref{fig:steps}:
+
+\begin{enumerate}[label=\roman*.]
+
+\item A etapa $\theta$ faz a soma \texttt{XOR} de uma elemento de $A$ e todos
+os elementos das colunas adjacentes indicadas.
+
+\item A etapa $\rho$ dispersa os elementos entre cortes transversais verticais
+de $A$.
+
+\item A etapa $\pi$ rearranja as posições de elementos em cortes transversais
+horizontais de $A$.
+
+\item A etapa $\chi$ tem como efeito fazer a soma \texttt{XOR} de cada bit em
+uma linha, de acordo com uma função não-linear de dois outros bits adjacentes.
+
+\item A etapa $\iota$ é utilizada para quebrar a simetria das operações acima,
+e sem esta etapa, todas as rodadas teriam a mesma saída. A soma \texttt{XOR} de
+alguns bits do estado $A$ é feita com um bit específico de uma sequência gerada
+por um LFSR\footnote{\emph{linear-feedback shift register}, um tipo de gerador
+de sequências pseudoaleatórias.}, alimentado pelo índice da rodada atual.
+
+\end{enumerate}
 
 \begin{figure}[H]
     \centering
@@ -134,27 +175,6 @@ R = \iota \circ \chi \circ \pi \circ \rho \circ \theta
     \label{fig:steps}
 \end{figure}
 
-\begin{itemize}
-
-\item A etapa $\theta$ faz a soma \texttt{XOR} de uma elemento de $A$ e todos os
-elementos das colunas adjacentes indicadas.
-
-\item A etapa $\rho$ dispersa os elementos entre cortes transversais verticais
-de $A$.
-
-\item A etapa $\pi$ rearranja as posições de elementos em cortes transversais
-horizontais de $A$.
-
-\item A etapa $\chi$ tem como efeito fazer a soma \texttt{XOR} de cada bit em
-uma linha, de acordo com uma função não-linear de dois outros bits adjacentes.
-
-\item A etapa $\iota$ é utilizada para quebrar a simetria das operações acima,
-e sem esta etapa, todas as rodadas teriam a mesma saída. A soma \texttt{XOR} de
-alguns bits do estado $A$ é feita com um bit específico de uma sequência gerada
-por um LFSR\footnote{\emph{linear-feedback shift register}, um tipo de gerador
-de sequências pseudoaleatórias.}, alimentado pelo índice da rodada atual.
-
-\end{itemize}
 
 \end{itemize}
 
