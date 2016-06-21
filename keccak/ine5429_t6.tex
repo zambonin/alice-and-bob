@@ -117,15 +117,15 @@ configurável pelo usuário. Esse processo pode ser observado na figura
 \ref{fig:sponge}.
 
 \item A permutação $f$ é descrita como uma sequência de operações num estado
-$A$, que é um vetor de elementos tridimensional em $GF(2)$, chamado de $A$.
-$f$ é uma permutação iterativa, consistindo de uma sequência de rodadas $R$.
+$A$, que é um vetor de elementos tridimensional em $GF(2)$.
+$f$ é uma permutação iterativa, consistindo de uma sequência de rodadas.
 Uma rodada $R$ consiste da composição de cinco etapas:
 $R = \iota \circ \chi \circ \pi \circ \rho \circ \theta$, como visto
 em \ref{fig:steps}:
 
 \begin{enumerate}[label=\roman*.]
 
-\item A etapa $\theta$ faz a soma \texttt{XOR} de uma elemento de $A$ e todos
+\item A etapa $\theta$ faz a soma \texttt{XOR} de um elemento de $A$ e todos
 os elementos das colunas adjacentes indicadas.
 
 \item A etapa $\rho$ dispersa os elementos entre cortes transversais verticais
@@ -148,7 +148,7 @@ de sequências pseudoaleatórias.}, alimentado pelo índice da rodada atual.
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.75]{sponge}
-    \caption{Uma construção esponja. Imagem retirada de \cite{CSF}.}
+    \caption{Uma construção esponja. Imagem retirada de \cite{SpongeReference}.}
     \label{fig:sponge}
 \end{figure}
 
@@ -163,18 +163,17 @@ de sequências pseudoaleatórias.}, alimentado pelo índice da rodada atual.
     \end{subfigure}
     \begin{subfigure}{.5\textwidth}
         \centering
-        \includegraphics[scale=0.8]{rho_step}
+        \includegraphics[scale=0.7]{rho_step}
     \end{subfigure}%
     \begin{subfigure}{.5\textwidth}
         \centering
-        \includegraphics[scale=0.7]{chi_step}
+        \includegraphics[scale=0.65]{chi_step}
     \end{subfigure}
     \caption{Da esquerda para a direita e de cima para baixo, as etapas
     $\theta$, $\pi$, $\rho$ e $\chi$. Imagens retiradas de
     \cite{KeccakReference}.}
     \label{fig:steps}
 \end{figure}
-
 
 \end{itemize}
 
