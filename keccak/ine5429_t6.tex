@@ -181,7 +181,7 @@ de sequências pseudoaleatórias.}, alimentado pelo índice da rodada atual.
 
 \begin{enumerate}[label=(\alph*)]
 
-\item O vetor de estados) (\emph{state array}) tem como função armazenar
+\item O vetor de estados (\emph{state array}) tem como função armazenar
 cada estado entre permutações $f$ do \textsc{Keccak}, de modo tridimensional.
 Este `'cubo`' tem dimensões $5 \times 5 \times 2^{\ell}$, $\ell \in [0, 6]$, e
 $2^{\ell} = w$. O número total de bits neste cubo, denotado por $b$, é
@@ -199,17 +199,18 @@ coluna é um conjunto de 5 bits onde apenas a coordenada $y$ muda.
 \item Tome $S$ como uma palavra de $b$ bits que representa um estado na
 construção esponja; então, o vetor de estados correspondente é definido como
 \begin{align*}
-A[x][y][z] = S[w(5y+x)+z] \mid x, y \in \mathbb{Z}_5 \land z \in \mathbb{Z}_w
+    A[x][y][z] = S[w(5y+x)+z]
+    \mid x, y \in \mathbb{Z}_5 \land z \in \mathbb{Z}_w
 \end{align*}
 
 Por exemplo, se $b = 200$, então segue que $w = 8$, e portanto:
 \begin{align*}
-A[0, 0, 0] &= S[0]   & A[1, 0, 0] &= S[8]  & & \cdots & A[4, 0, 0] &= S[32] \\
-\vdots && \vdots &&& \cdots && \vdots \\
-A[0, 0, 7] &= S[7]   & A[1, 0, 7] &= S[15] & & \cdots & A[4, 0, 7] &= S[39] \\
-A[0, 1, 0] &= S[40]  & A[1, 1, 0] &= S[48] & & \cdots & A[4, 1, 0] &= S[72] \\
-\vdots && \vdots &&& \cdots && \vdots \\
-A[0, 4, 7] &= S[167] & A[1, 4, 7] &= [175] & & \cdots & A[4, 4, 7] &= S[199]
+    A[0, 0, 0] &= S[0]   & A[1, 0, 0] &= S[8]  & & \cdots & A[4, 0, 0] &= S[32] \\
+    \vdots && \vdots &&& \cdots && \vdots \\
+    A[0, 0, 7] &= S[7]   & A[1, 0, 7] &= S[15] & & \cdots & A[4, 0, 7] &= S[39] \\
+    A[0, 1, 0] &= S[40]  & A[1, 1, 0] &= S[48] & & \cdots & A[4, 1, 0] &= S[72] \\
+    \vdots && \vdots &&& \cdots && \vdots \\
+    A[0, 4, 7] &= S[167] & A[1, 4, 7] &= [175] & & \cdots & A[4, 4, 7] &= S[199]
 \end{align*}
 
 \item A construção de uma palavra $S$ a partir de um vetor de estados $A$ é
@@ -218,9 +219,9 @@ primeiro, depois $x$, e por fim $y$; a inversa da operação acima.
 
 Por exemplo, se $b = 200$ e $w = 8$:
 \begin{align*}
-S = A[0, 0, 0] \mid\mid \cdots \mid\mid A[0, 0, 7] \mid\mid A[1, 0, 0]
-\mid\mid \cdots \mid\mid A[4, 0, 7] \mid\mid A[0, 1, 0] \mid\mid A[0, 1, 1]
-\mid\mid \cdots \mid\mid A[4, 4, 7]
+    S = A[0, 0, 0] \mid\mid \cdots \mid\mid A[0, 0, 7] \mid\mid A[1, 0, 0]
+    \mid\mid \cdots \mid\mid A[4, 0, 7] \mid\mid A[0, 1, 0] \mid\mid A[0, 1, 1]
+    \mid\mid \cdots \mid\mid A[4, 4, 7]
 \end{align*}
 
 \item Todas as operações realizadas devem ser sobre módulo 5 nas coordenadas
@@ -256,14 +257,14 @@ processo iterativo de multiplicação de matrizes.
 Tome $M = \begin{pmatrix} 0 & 1 \\ 2 & 3 \end{pmatrix}$ e
 $B = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$:
 \begin{align*}
-t &= 0 \longrightarrow M^{0} \cdot B
-    = \begin{pmatrix} 1 \\ 0 \end{pmatrix} \hspace{1cm}
-t = 1 \longrightarrow M^{1} \cdot B
-    = \begin{pmatrix} 0 \\ 2 \end{pmatrix} \\
-t &= 2 \longrightarrow M^{2} \cdot B
-    = \begin{pmatrix} 2 \\ 6 \end{pmatrix} \hspace{1cm}
-t = 3 \longrightarrow M^{3} \cdot B
-    = \begin{pmatrix} 6 \\ 22 \end{pmatrix}
+    t &= 0 \longrightarrow M^{0} \cdot B
+        = \begin{pmatrix} 1 \\ 0 \end{pmatrix} \hspace{1cm}
+    t = 1 \longrightarrow M^{1} \cdot B
+        = \begin{pmatrix} 0 \\ 2 \end{pmatrix} \\
+    t &= 2 \longrightarrow M^{2} \cdot B
+        = \begin{pmatrix} 2 \\ 6 \end{pmatrix} \hspace{1cm}
+    t = 3 \longrightarrow M^{3} \cdot B
+        = \begin{pmatrix} 6 \\ 22 \end{pmatrix}
 \end{align*}
 
 Então, pode-se verificar que existe uma relação de recorrência tal que
@@ -356,9 +357,9 @@ seja igualmente divisível em blocos.
 de tamanho $N$ e tamanho de saída $d$, com capacidade $c$. Ela pode ser
 definida como
 \begin{align*}
-\textsc{Keccak}[r, c] &\stackrel{\Delta}{=}
-\textsc{sponge}[\textsc{Keccak}-f[r+c], \texttt{pad10*1}, r](N, d) \\
-\textsc{Keccak}[c] &\stackrel{\Delta}{=} \textsc{Keccak}[r = 1600 - c, c](N, d)
+    \textsc{Keccak}[r, c] &\stackrel{\Delta}{=}
+    \textsc{sponge}[\textsc{Keccak}-f[r+c], \texttt{pad10*1}, r](N, d) \\
+    \textsc{Keccak}[c] &\stackrel{\Delta}{=} \textsc{Keccak}[r=1600-c, c](N, d)
 \end{align*}
 
 e é a base para todas as quatro funções SHA-3. A função \textsc{sponge} é a
@@ -372,10 +373,10 @@ e são definidas a partir da função \textsc{Keccak}$[c]$ especificada acima. E
 cada caso, a capacidade é o dobro do tamanho do resumo criptográfico, e todas
 as mensagens são sufixadas com a palavra \texttt{01}. Ou seja,
 \begin{align*}
-SHA3-224(M) &= \textsc{Keccak}[448](M \mid\mid \texttt{01}, 224) \\
-SHA3-256(M) &= \textsc{Keccak}[512](M \mid\mid \texttt{01}, 256) \\
-SHA3-384(M) &= \textsc{Keccak}[768](M \mid\mid \texttt{01}, 384) \\
-SHA3-512(M) &= \textsc{Keccak}[1024](M \mid\mid \texttt{01}, 512)
+    SHA3-224(M) &= \textsc{Keccak}[448](M \mid\mid \texttt{01}, 224) \\
+    SHA3-256(M) &= \textsc{Keccak}[512](M \mid\mid \texttt{01}, 256) \\
+    SHA3-384(M) &= \textsc{Keccak}[768](M \mid\mid \texttt{01}, 384) \\
+    SHA3-512(M) &= \textsc{Keccak}[1024](M \mid\mid \texttt{01}, 512)
 \end{align*}
 
 \item Duas outras funções, chamadas de \emph{SHA-3 Extendable-Output Functions}
@@ -383,8 +384,8 @@ SHA3-512(M) &= \textsc{Keccak}[1024](M \mid\mid \texttt{01}, 512)
 \texttt{1111} como sufixo à mensagem $M$. Para qualquer tamanho de saída $d$,
 tem-se
 \begin{align*}
-SHAKE128(M, d) &= \textsc{Keccak}[256](M \mid\mid \texttt{1111}, d) \\
-SHAKE256(M, d) &= \textsc{Keccak}[512](M \mid\mid \texttt{1111}, d)
+    SHAKE128(M, d) &= \textsc{Keccak}[256](M \mid\mid \texttt{1111}, d) \\
+    SHAKE256(M, d) &= \textsc{Keccak}[512](M \mid\mid \texttt{1111}, d)
 \end{align*}
 
 \end{enumerate}
