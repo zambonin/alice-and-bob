@@ -429,6 +429,27 @@ para garantir sua acurácia.
 
 \end{enumerate}
 
+\section{Implementação}
+
+\begin{enumerate}[label=(\alph*)]
+
+\item Toda a documentação referente à implementação pode ser encontrada junto
+ao próprio código, localizado em \texttt{keccakf1600.py}, no repositório fonte
+deste documento. Embora sua performance não seja competitiva, a legibilidade
+foi obtida omitindo constantes `'mágicas`' e optando por gerá-las de acordo
+com a execução do programa, junto ao funcionamento das outras etapas.
+
+\item A função \texttt{Keccak} contém três partes principais: a absorção, em
+157--164; o preenchimento, em 166--170; e a compressão, em 172--178. A
+permutação \texttt{keccak\_f\_1600}, por sua vez, abriga as etapas $\theta$ em
+103--105, $\rho$ e $\pi$ mescladas em 107--111, $\chi$ em 113--116 e $\iota$ em
+118--121. É possível substituir facilmente a etapa assimétrica pelo vetor de
+constantes $RC$, e embora trabalhoso, adaptar o código para utilizar o vetor de
+constantes $r$ na etapa $\rho$, assim trazendo a implementação mais próxima do
+pseudocódigo apresentado em \cite{KeccakImplementation}.
+
+\end{enumerate}
+
 \bibliography{ine5429_t6}
 \bibliographystyle{plain}
 
