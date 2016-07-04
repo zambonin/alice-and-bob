@@ -436,11 +436,11 @@ para garantir sua acurácia.
 \item Toda a documentação referente à implementação pode ser encontrada junto
 ao próprio código, localizado em \texttt{keccakf1600.py}, no repositório fonte
 deste documento. Embora sua performance não seja competitiva, a legibilidade
-foi obtida omitindo constantes `'mágicas`' e optando por gerá-las de acordo
-com a execução do programa, junto ao funcionamento das outras etapas.
+foi obtida omitindo constantes `'mágicas`', escolhendo gerá-las ao longo da
+execução do programa.
 
-\item A função \texttt{Keccak} contém três partes principais: a absorção, em
-157--164; o preenchimento, em 166--170; e a compressão, em 172--178. A
+\item A função \texttt{Keccak} contém três partes principais: a absorção, nas
+linhas 157--164; o preenchimento, em 166--170; e a compressão, em 172--178. A
 função \texttt{keccak\_f\_1600}, por sua vez, abriga as etapas $\theta$ em
 103--105, $\rho$ e $\pi$ mescladas em 107--111, $\chi$ em 113--116 e $\iota$ em
 118--121. É possível substituir facilmente a etapa assimétrica pelo vetor de
@@ -450,9 +450,9 @@ pseudocódigo apresentado em \cite{KeccakImplementation}.
 
 \item As funções podem ser chamadas diretamente a partir de um interpretador
 após importar o código-fonte; note que a função \texttt{hex()} é exclusiva do
-Python 3.5\texttt{+}. Assim, usuários de outras versões podem utilizar o
-segundo método para obter o resumo em forma hexadecimal. A entrada deve ser
-um vetor de bytes, facilmente criado em Python adicionado o caractere
+Python 3.5\texttt{+}; assim, usuários de outras versões podem utilizar o
+segundo método para obter o resumo em forma hexadecimal convencional. A entrada
+deve ser um vetor de bytes, facilmente criado em Python adicionado o caractere
 \texttt{b} à frente do conteúdo da palavra.
 
 \begin{verbatim}
@@ -470,9 +470,9 @@ $ python2
 '6b4e03423667dbb73b6e15454f0eb1abd4597f9a1b078e3f5b5a6bc7'
 \end{verbatim}
 
-A saída do programa pode ser encontrada junto ao arquivo \texttt{shodan.out},
-mostrando o vetor de estados impresso a cada etapa concluída, em todas as
-rodadas.
+A saída do programa, gerada por uma implementação à parte e ainda não
+publicada, pode ser encontrada junto ao arquivo \texttt{shodan.out}, mostrando
+o vetor de estados impresso a cada etapa concluída, em todas as rodadas.
 
 \begin{verbatim}
 Mensagem original
@@ -485,6 +485,33 @@ Resultado final
 \end{enumerate}
 
 \newpage
+
+\section{Segurança}
+
+\begin{enumerate}[label=(\alph*)]
+
+\item O principal argumento fundamentando a escolha do \textsc{Keccak} pelo NIST
+foi sua grande diferença em relação ao atual padrão, SHA-2. Enquanto o SHA-3 é
+uma função esponja (extremamente flexível e customizável) que abriga uma
+permutação com etapas focadas na proteção contra diversos tipos de
+criptoanálise, o SHA-2 é uma versão mais robusta de algoritmos já conhecidos e
+analisados exaustivamente, que operam repetidamente com álgebra booleana,
+rotações de bits e adições módulo $2^{32}$. Embora essa característica não afete
+sua segurança atualmente, é possível que ataques a esta família de algoritmos
+(principalmente ao padrão anterior, SHA-1) possam contribuir para que o SHA-2
+seja ameaçado no futuro.
+
+\item Não é possível afirmar um período de tempo com absoluta certeza, porém o
+\href{http://keccak.noekeon.org/third_party.html}{material publicado} sugere que
+as permutações \textsc{Keccak} são extremamente resistentes a ataques
+convencionais, e são geralmente analisadas com métodos de vanguarda
+(\emph{zero-sum, rotational cryptanalysis}) e/ou um número de rodadas reduzido.
+Resultados práticos só foram obtidos com um número de rodadas extremamente
+pequeno. Assim, é possível conjecturar que \textsc{Keccak} manterá sua
+resistência por pelo menos um decênio, antes que o poder computacional médio
+evolua suficientemente para que buscas exaustivas possam ser realizadas.
+
+\end{enumerate}
 
 \bibliography{ine5429_t6}
 \bibliographystyle{plain}
