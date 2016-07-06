@@ -45,7 +45,7 @@ def keccak_f_1600(state):
 
     The ι step is a simple LFSR that breaks the symmetry of the rounds. It
     generates constants by doing computations according to the round number
-    modulo the polynomial with coefficients {8, 6, 5, 4, 0} over GF(2).
+    and its previous output, modulo polynomials over GF(2)[x].
 
     Args:
         state:  square matrix of order 5 that holds the input bytes.
