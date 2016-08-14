@@ -286,13 +286,14 @@ poderiam ser simplificadas, de acordo com \cite{KeccakDC}.
 \item $\chi : A[x] \longleftarrow A[x] + (A[x + 1] + 1) \cdot A[x + 2]$
 
 A etapa $\chi$ é a única não-linear, trocando o valor do bit operado se seus
-vizinhos forem 0 à esquerda e 1 à direita. Sem esta etapa, a rodada $R$ seria
-completamente linear. Pode ser vista como a aplicação paralela de $5 \cdot w$
-caixas-S\footnote{\emph{substitution box}, um componente básico de
-criptografia simétrica, responsável por mapear uma entrada de tamanho $m$
-para uma saída de tamanho $n$ de modo a diluir a relação entre estes. São
-cuidadosamente construídas para resistir à criptoanálise linear e diferencial.}
-operando em cada linha do vetor de estados.
+dois próximos vizinhos à direita forem, respectivamente, 0 e 1. Sem esta
+etapa, a rodada $R$ seria completamente linear. Pode ser vista como a
+aplicação paralela de $5 \cdot w$ caixas-S\footnote{\emph{substitution box},
+um componente básico de criptografia simétrica, responsável por mapear uma
+entrada de tamanho $m$ para uma saída de tamanho $n$ de modo a diluir a
+relação entre estes. São cuidadosamente construídas para resistir à
+criptoanálise linear e diferencial.} operando em cada linha do vetor de
+estados.
 
 \item $\iota : A \longleftarrow A + RC[i_r]$, \\
     $RC[i_r][x][y][z] = 0$, \\
