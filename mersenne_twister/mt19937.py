@@ -39,7 +39,7 @@ class MT19937(object):
                single value is used as seed.
         """
         self.mt = [None] * n
-        self.index = n+1
+        self.index = n + 1
         self.lower_mask = (1 << r) - 1
         self.upper_mask = self.lowest_n_bits(~(self.lower_mask), w)
         self.w = w
@@ -84,7 +84,7 @@ class MT19937(object):
         self.index = self.n
         self.mt[0] = seed
         for i in range(1, self.n):
-            prev = self.mt[i-1]
+            prev = self.mt[i - 1]
             self.mt[i] = self.lowest_n_bits(
                 self.f * (prev ^ (prev >> (self.w - 2)) + i), self.w)
 

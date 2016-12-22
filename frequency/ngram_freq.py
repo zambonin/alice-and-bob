@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import re
-import sys
 
 from collections import Counter, OrderedDict
+from sys import argv
 
 try:
     from matplotlib import pyplot as plt
@@ -14,7 +14,6 @@ except ImportError:
 
 def ngram_frequency(n, text):
     digs = tuple(text[x:x + n] for x in range(len(text) - (n - 1)))
-
     return {k: v for k, v in Counter(digs).items() if ' ' not in k}
 
 
@@ -37,9 +36,11 @@ def show_output(freq, num, path):
             bars = "▇" * int(ord_dict[i] / step)
             print("{}: {} ({})".format(i, bars, ord_dict[i]))
 
+
 if __name__ == '__main__':
-    arg = sys.argv[1]
-    with open(arg) as raw:
+    if len(argv) != 2:
+        raise SystemExit("Invalid number of parameters!")
+    with open(argv[1]) as raw:
         text = "".join(i.lower().replace('\n', ' ') for i in raw.readlines())
         pattern = re.compile('[^a-z ]+')
         simple = pattern.sub('', text)

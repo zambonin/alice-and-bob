@@ -95,8 +95,8 @@ def keccak_f_1600(state):
     A = [[0 for _ in range(5)] for _ in range(5)]
     for x in range(5):
         for y in range(5):
-            i = 8*(x + 5*y)
-            A[x][y] = load64(state[i:i+8])
+            i = 8 * (x + 5 * y)
+            A[x][y] = load64(state[i:i + 8])
 
     R = 1
     for _ in range(24):
@@ -106,7 +106,7 @@ def keccak_f_1600(state):
 
         x, y, current = 1, 0, A[1][0]
         for t in range(24):
-            x, y = y, (2*x + 3*y) % 5
+            x, y = y, (2 * x + 3 * y) % 5
             offset = ((t + 1) * (t + 2)) // 2
             current, A[x][y] = A[x][y], rotate(current, offset)
 
@@ -122,8 +122,8 @@ def keccak_f_1600(state):
 
     for x in range(5):
         for y in range(5):
-            i = 8*(x + 5*y)
-            state[i:i+8] = store64(A[x][y])
+            i = 8 * (x + 5 * y)
+            state[i:i + 8] = store64(A[x][y])
 
     return state
 

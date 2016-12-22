@@ -62,8 +62,8 @@ class RSA(object):
 
         while remainder:
             gcd, (quotient, remainder) = remainder, divmod(gcd, remainder)
-            old_x, x = x - quotient*old_x, old_x
-            old_y, y = y - quotient*old_y, old_y
+            old_x, x = x - quotient * old_x, old_x
+            old_y, y = y - quotient * old_y, old_y
 
         return gcd, x, y
 

@@ -1,3 +1,0 @@
-# UFSC-INE5429
-Algorithms that handle a few topics of computer security. Each folder contains
-a more detailed README.
