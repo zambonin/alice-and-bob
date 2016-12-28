@@ -1,0 +1,17 @@
+Implementation based on [1] for a subset of the Keccak sponge function family,
+known as the FIPS 202 (SHA-3) standard. It serves primarily as a cryptographic
+hash function with infinite output.
+
+`shodan.out` is a step-by-step output for the message
+
+    "How can you challenge a perfect, immortal machine?"
+
+containing all the twenty-four rounds and its steps.
+
+A video explaining Keccak, in pt_BR, was produced as part of the assignment.
+It is unlisted by default, but it can be watched here [2].
+
+[1] https://github.com/gvanas/KeccakCodePackage/blob/master/Standalone/CompactFIPS202-Python/CompactFIPS202.py
+[2] https://www.youtube.com/watch?v=PELg2tBEhBw
+
+Original assignment: a97df44328a13aaa5178b26414d4818e24c29beb

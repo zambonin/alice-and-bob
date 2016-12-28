@@ -1,3 +1,5 @@
 This folder contains code for a Mersenne Twister PRNG, Fermat and Miller-Rabin
 primality tests, and a script which generates pseudo-random prime numbers with
 fixed bit lengths. The MT code passes 99% of the `dieharder` standard tests.
+
+Original assignment: 6e135b4837e2de194096a29427de3ddb36225e12
