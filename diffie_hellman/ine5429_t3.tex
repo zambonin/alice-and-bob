@@ -1,18 +1,13 @@
-\documentclass{article}
+\documentclass{../sftex/sftex}
 
-\usepackage[brazil]{babel}
-\usepackage[T1]{fontenc}
-\usepackage[a4paper, margin=1.5cm]{geometry}
-\usepackage[colorlinks, urlcolor=blue, citecolor=red]{hyperref}
-\usepackage[utf8]{inputenc}
 \usepackage{amsfonts, mathtools}
 
-\title{\textbf{Protocolo de Acordo de Chaves de Diffie--Hellman}}
-\author{Gustavo Zambonin\thanks{\texttt{gustavo.zambonin@grad.ufsc.br} ---
-todos os algoritmos utilizados podem ser encontrados
-também \href{https://github.com/zambonin/ufsc-ine5429}{neste repositório}.} \\
-\small {Segurança em Computação (UFSC -- INE5429)} \vspace{-5mm}}
-\date{}
+\title{Protocolo de Acordo de Chaves de Diffie-Hellman}
+\author{Gustavo Zambonin}
+\email{gustavo.zambonin@grad.ufsc.br}
+\src{https://github.com/zambonin/ufsc-ine5429}
+\uniclass{Segurança em Computação}
+\classcode{UFSC-INE5429}
 
 \begin{document}
 
@@ -21,33 +16,34 @@ também \href{https://github.com/zambonin/ufsc-ine5429}{neste repositório}.} \\
 \begin{itemize}
 
 \item Originalmente publicado em 1975, o \emph{protocolo de acordo de chaves
-Diffie--Hellman} (DH) \cite{Diffie:2006:NDC:2263321.2269104} habilita duas
+Diffie-Hellman} (DH)~\cite{Diffie:2006:NDC:2263321.2269104} habilita duas
 entidades a estabelecerem uma \emph{chave secreta} mesmo que estas não tenham se
 comunicado previamente, com o benefício desta troca de dados poder ser
 monitorada sem que tal chave seja descoberta. Esta pode ser utilizada,
 possivelmente, em um algoritmo de cifragem simétrico, de modo a habilitar a
 troca de mensagens criptografadas entre as entidades. Uma distinção importante é
 que \emph{nenhuma} informação é trocada além das inerentes ao processo de
-criação de chave -- assim sendo, o protocolo DH \emph{não} é classificado como
+criação de chave --- assim sendo, o protocolo DH \emph{não} é classificado como
 um algoritmo de criptografia assimétrica.
 
 Uma descrição matemática pode ser resumida da seguinte maneira: sejam Alice e
 Bob as entidades em questão; um número primo $g$ e uma de suas raízes primitivas
 $p$, ambos suficientemente grandes (e geralmente publicamente padronizados
-\cite{rfc5114}) são escolhidos por Alice e Bob. Cada uma das entidades gera
+~\cite{rfc5114}) são escolhidos por Alice e Bob. Cada uma das entidades gera
 um número secreto para si, chamados de $X_A$ e $X_B$; Alice calcula $A = g^{X_A}
 \pmod{p}$ e envia para Bob; do mesmo modo, $B = g^{X_B} \pmod{p}$ é enviado para
 Alice por Bob. Assim, as únicas trocas propostas são efetuadas e as entidades já
 compartilham uma chave secreta.
 
 Esta reside no cálculo de $B^{X_A} \pmod{p}$ por Alice e $A^{X_B} \pmod{p}$ por
-Bob. Expandindo os números recebidos, temos $(g^{X_A} \pmod{p})^{X_B} \pmod{p}$
-e $(g^{X_B} \pmod{p})^{X_A} \pmod{p}$ respectivamente; é possível reduzir estes
-números, através de aritmética modular, para $g^{X_A X_B} \pmod{p}$ e $g^{X_B
-X_A} \pmod{p}$; nota-se a igualdade dos termos, em virtude da comutatividade da
-operação de multiplicação sob os números reais. Assim, Alice nunca soube o
-número secreto de Bob e vice-versa, e a chave secreta nunca foi transmitida,
-porém é conhecida por ambos.
+Bob. Expandindo os números recebidos, temos
+${(g^{X_A} \pmod{p})}^{X_B} \pmod{p}$ e ${(g^{X_B} \pmod{p})}^{X_A} \pmod{p}$
+respectivamente; é possível reduzir estes números, através de aritmética
+modular, para $g^{X_A X_B} \pmod{p}$ e $g^{X_B X_A} \pmod{p}$; nota-se a
+igualdade dos termos, em virtude da comutatividade da operação de multiplicação
+sob os números reais. Assim, Alice nunca soube o número secreto de Bob e
+vice-versa, e a chave secreta nunca foi transmitida, porém é conhecida por
+ambos.
 \begin{align*}
 Alice \overset{A}{\longrightarrow} Bob \\
 Alice \overset{B}{\longleftarrow} Bob

@@ -1,18 +1,13 @@
-\documentclass{article}
+\documentclass{../sftex/sftex}
 
-\usepackage[brazil]{babel}
-\usepackage[T1]{fontenc}
-\usepackage[a4paper, margin=1.5cm]{geometry}
-\usepackage[colorlinks, urlcolor=blue, citecolor=red]{hyperref}
-\usepackage[utf8]{inputenc}
 \usepackage{amsfonts, mathtools}
 
-\title{\textbf{Geração de números primos}}
-\author{Gustavo Zambonin\thanks{\texttt{gustavo.zambonin@grad.ufsc.br} ---
-todos os algoritmos utilizados podem ser encontrados
-também \href{https://github.com/zambonin/ufsc-ine5429}{neste repositório}.} \\
-\small {Segurança em Computação (UFSC -- INE5429)} \vspace{-5mm}}
-\date{}
+\title{Geração de números primos}
+\author{Gustavo Zambonin}
+\email{gustavo.zambonin@grad.ufsc.br}
+\src{https://github.com/zambonin/ufsc-ine5429}
+\uniclass{Segurança em Computação}
+\classcode{UFSC-INE5429}
 
 \begin{document}
 
@@ -37,7 +32,7 @@ de números pseudoaleatórios \emph{criptograficamente seguro} (CSPRNG) é muito
 mais recomendável para uso em aplicações sensíveis.
 
 O PRNG discutido é o \emph{Mersenne Twister} (MT,
-\cite{Matsumoto:1998:MTE:272991.272995}), o mais difundido e presente em
+~\cite{Matsumoto:1998:MTE:272991.272995}), o mais difundido e presente em
 várias linguagens de programação como o gerador padrão de números
 pseudoaleatórios. Seu nome é derivado do período\footnote{a quantidade de
 números gerados antes da sequência começar a se repetir.} de $2^{19937} - 1$,
@@ -47,7 +42,7 @@ linear matricial sobre $\mathbb{F}_2$\footnote{o corpo de Galois de dois
 elementos, também representado por $GF(2)$.}. Definindo uma série $x_i$
 através de uma relação de recorrência simples, obtêm-se números na forma $x_i
 A$, onde $A$ é uma matriz com elementos em $\mathbb{F}_2$, assim
-`'temperando`' os elementos de modo recorrente. Este passo pode ser facilmente
+``temperando'' os elementos de modo recorrente. Este passo pode ser facilmente
 revertido através de uma transformação linear, e o padrão dos números gerados
 revelado com suficiente observação, assim fundamentando o fato de que este
 gerador não é criptograficamente seguro.
@@ -74,7 +69,7 @@ gerado):
 \end{verbatim}
 
 \item A utilização de números primos com fins criptográficos é bem conhecida;
-um uso bastante comum é na modalidade assimétrica -- chaves RSA são geradas a
+um uso bastante comum é na modalidade assimétrica --- chaves RSA são geradas a
 partir de números primos com um número de bits suficiente para que sejam
 seguras e praticamente inquebráveis. Assim sendo, devem existir testes de
 primalidade que sejam razoavelmente simples de modo a facilitar estes
@@ -102,9 +97,9 @@ a^{2^{r}d} \not\equiv -1 \pmod{p} \; \forall \; (0 \leq r \leq s-1)
 de modo que $a$ novamente é uma testemunha. Procede-se da mesma maneira,
 escolhendo inteiros $a$ aleatoriamente. Se qualquer uma das congruências acima
 proceder, então $p$ não é primo. Similarmente, caso o método retorne
-`'verdadeiro`', então $p$ provavelmente é primo. Uma demonstração sobre a
+``verdadeiro'', então $p$ provavelmente é primo. Uma demonstração sobre a
 origem das congruências acima pode ser encontrada em
-\cite{Miller:1976:RHT:1739937.1740086} e em diversos outros artigos
+~\cite{Miller:1976:RHT:1739937.1740086} e em diversos outros artigos
 posteriores que simplificam esta prova. Naturalmente, este teste tem uma
 maior complexidade e portanto um tempo de execução maior, porém isso é
 relevado pela maior precisão, pois independente do número testado, existe

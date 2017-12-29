@@ -1,18 +1,13 @@
-\documentclass{article}
+\documentclass{../sftex/sftex}
 
-\usepackage[brazil]{babel}
-\usepackage[T1]{fontenc}
-\usepackage[a4paper, margin=1.5cm]{geometry}
-\usepackage[colorlinks, urlcolor=blue, citecolor=red]{hyperref}
-\usepackage[utf8]{inputenc}
 \usepackage{amsfonts, mathtools}
 
-\title{\textbf{Raízes primitivas módulo $n$}}
-\author{Gustavo Zambonin\thanks{\texttt{gustavo.zambonin@grad.ufsc.br} ---
-todos os algoritmos utilizados podem ser encontrados
-também \href{https://github.com/zambonin/ufsc-ine5429}{neste repositório}.} \\
-\small {Segurança em Computação (UFSC -- INE5429)} \vspace{-5mm}}
-\date{}
+\title{Raízes primitivas módulo $n$}
+\author{Gustavo Zambonin}
+\email{gustavo.zambonin@grad.ufsc.br}
+\src{https://github.com/zambonin/ufsc-ine5429}
+\uniclass{Segurança em Computação}
+\classcode{UFSC-INE5429}
 
 \begin{document}
 
@@ -72,11 +67,11 @@ s-1]$ são coprimos a ele, logo $\phi(s) = s - 1$.
 todas as raízes primitivas de um número se apenas uma já é conhecida. Seja $g$
 uma raiz primitiva módulo $n$, onde $n$ é um primo ímpar (para simplicidade da
 demonstração). Então sabe-se que $g$ pode gerar todas as potências da forma $g^m
-\equiv 1 \pmod n)$, para $(m = 1 \dots n - 1)$. Para estes números serem raízes
-primitivas, $(a^m)^{(n - 1)/d} \equiv (a^{n - 1})^{m/d} \equiv 1 \pmod n$, então
-precisa-se de $d = 1$. O código em \texttt{primitive\_root.py} explora uma
+\equiv 1 \pmod n $, para $(m = 1 \dots n - 1)$. Para estes números serem raízes
+primitivas, ${(a^m)}^{(n - 1)/d} \equiv {(a^{n - 1})}^{m/d} \equiv 1 \pmod n$,
+então precisa-se de $d = 1$. O código em \texttt{primitive\_root.py} explora uma
 variante dessa análise que utiliza-se da escolha de números aleatórios como
-`'chutes`' para a possível raiz primitiva (estes números devem estar dentro do
+``chutes'' para a possível raiz primitiva (estes números devem estar dentro do
 grupo multiplicativo $\mathbb{Z}/n\mathbb{Z}$\footnote{o conjunto de classes de
 congruência relativamente primos ao número.} para que a análise seja válida).
 
@@ -122,10 +117,10 @@ necessário resolver um problema chamado de \emph{logaritmo discreto}: um inteir
 $k$ que resolve a equação $b^k = g$, onde $b$ e $g$ são elementos (não
 necessariamente números reais) cuidadosamente escolhidos. Métodos eficientes
 para a resolução deste problema não são conhecidos, e diversos algoritmos de
-criptografia assimétrica baseiam sua segurança nessa `'dificuldade`'.
+criptografia assimétrica baseiam sua segurança nessa ``dificuldade''.
 
 Uma aplicação menos conhecida ocorre no design de difusores acústicos modulares
-\cite{Walker:1990}; um difusor com uma estrutura baseada em raízes primitivas
+~\cite{Walker:1990}; um difusor com uma estrutura baseada em raízes primitivas
 possibilita a prevenção de reflexão de onda na direção
 especular\footnote{reflexão de ondas similar a um espelho, onde uma onda é
 refletida para uma direção única, como num lago.}, assim absorvendo uma maior

@@ -2,4 +2,6 @@ Some resolutions of exercises from the book Cryptography and Network Security,
 by William Stallings, ranging from modular to finite field arithmetic, and
 some algebraic definitions.
 
+Needs the `enumitem` package to be compiled correctly.
+
 Original assignment: 41aa4976d37ced66bd44d16c61813b5370aa0e58

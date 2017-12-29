@@ -1,43 +1,18 @@
-\documentclass{article}
+\documentclass{../sftex/sftex}
 
-\usepackage[brazil]{babel}
-\usepackage[T1]{fontenc}
-\usepackage[a4paper, left=1.5cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}
-\usepackage[colorlinks, urlcolor=blue, citecolor=red]{hyperref}
-\usepackage[utf8]{inputenc}
 \usepackage[pdftex]{graphicx}
-\usepackage{amsfonts, amsmath, enumitem, fancyhdr, float, subcaption}
+\usepackage{amsfonts, amsmath, enumitem, float, subcaption}
 
-\pagestyle{fancy}
-
-\fancyhead{}
-\fancyfoot[L]{\href{https://github.com/zambonin/ufsc-ine5429}{\texttt{src/}}}
-\fancyfoot[C]{\itshape\nouppercase{\leftmark}}
-\fancyfoot[R]{\thepage}
-
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0.75pt}
-
-\fancypagestyle{firststyle} {
-    \renewcommand{\headrulewidth}{0.75pt}
-    \fancyhead[L]{UFSC -- INE5429}
-    \fancyhead[C]{Gustavo Zambonin}
-    \fancyhead[R]{\footnotesize{\texttt{gustavo.zambonin@grad.ufsc.br}}}
-}
-
-\title{\vspace{-1.5cm}
-    \Large{\textbf{
-        A função \emph{hash} criptográfica SHA-3
-    }}\vspace{-1.5cm}
-}
-\author{}
-\date{}
+\title{A função \emph{hash} criptográfica SHA-3}
+\author{Gustavo Zambonin}
+\email{gustavo.zambonin@grad.ufsc.br}
+\src{https://github.com/zambonin/ufsc-ine5429}
+\uniclass{Segurança em Computação}
+\classcode{UFSC-INE5429}
 
 \begin{document}
 
 \maketitle
-
-\thispagestyle{firststyle}
 
 \section{Definições}
 
@@ -48,7 +23,7 @@
 quantidade de bytes qualquer\footnote{algumas funções desse tipo têm
 limites quanto ao tamanho da entrada, embora estes sejam extremamente
 grandes.} para uma palavra de tamanho fixo, ou seja,
-$h : \{0, 1\}^{*} \longrightarrow \{0, 1\}^{n}$, $n \in \mathbb{N}$.
+$h : {\{0, 1\}}^{*} \longrightarrow {\{0, 1\}}^{n}$, $n \in \mathbb{N}$.
 
 Para que seja resistente a diversos tipos de criptoanálise, uma função
 $h : X \longrightarrow Y$ deve respeitar algumas propriedades:
@@ -94,7 +69,7 @@ autenticação do usuário.
 
 \end{itemize}
 
-\item O padrão SHA-3, descrito pelo documento FIPS 202 \cite{Dworkin2015}, é
+\item O padrão SHA-3, descrito pelo documento FIPS 202~\cite{Dworkin2015}, é
 baseado em uma instância da família \textsc{Keccak} de permutações matemáticas,
 selecionada pelo NIST (\emph{National Institute of Standards and Technology})
 e especificada neste documento.
@@ -114,14 +89,14 @@ uma função de permutação $f$, de modo iterativo; e a fase de compressão
 (\emph{squeezing}), onde os blocos de saída, intercalados novamente pela
 permutação $f$, são concatenados para gerar uma palavra com um número de bits
 configurável pelo usuário. Esse processo pode ser observado na figura
-\ref{fig:sponge}.
+~\ref{fig:sponge}.
 
 \item A permutação $f$ é descrita como uma sequência de operações num estado
 $A$, que é um vetor de elementos tridimensional em $GF(2)$.
 $f$ é uma permutação iterativa, consistindo de uma sequência de rodadas.
 Uma rodada $R$ consiste da composição de cinco etapas:
 $R = \iota \circ \chi \circ \pi \circ \rho \circ \theta$, como visto
-em \ref{fig:steps}:
+em~\ref{fig:steps}:
 
 \begin{enumerate}[label=\roman*.]
 
@@ -145,14 +120,13 @@ de sequências pseudoaleatórias.}, alimentado pelo índice da rodada atual.
 
 \end{enumerate}
 
-\begin{figure}[H]
+\begin{figure}[H]\label{fig:sponge}
     \centering
     \includegraphics[scale=0.9]{images/sponge}
-    \caption{Uma construção esponja. Imagem retirada de \cite{SpongeReference}.}
-    \label{fig:sponge}
+    \caption{Uma construção esponja. Imagem retirada de~\cite{SpongeReference}.}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[H]\label{fig:steps}
     \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[scale=0.8]{images/theta_step}
@@ -170,20 +144,19 @@ de sequências pseudoaleatórias.}, alimentado pelo índice da rodada atual.
         \includegraphics[scale=0.65]{images/chi_step}
     \end{subfigure}
     \caption{Da esquerda para a direita e de cima para baixo, as etapas
-    $\theta$, $\pi$, $\rho$ e $\chi$. Imagens retiradas de
-    \cite{KeccakReference}.}
-    \label{fig:steps}
+    $\theta$, $\pi$, $\rho$ e $\chi$.
+    Imagens retiradas de~\cite{KeccakReference}.}
 \end{figure}
 
 \end{itemize}
 
 \section{Especificações formais}
 
-\begin{enumerate}[label=(\alph*)]
+\begin{enumerate}[label= (\alph*)]
 
 \item O vetor de estados (\emph{state array}) tem como função armazenar
 cada estado entre permutações $f$ do \textsc{Keccak}, de modo tridimensional.
-Este `'cubo`' tem dimensões $5 \times 5 \times 2^{\ell}$, $\ell \in [0, 6]$, e
+Este ``cubo'' tem dimensões $5 \times 5 \times 2^{\ell}$, $\ell \in [0, 6]$, e
 $2^{\ell} = w$. O número total de bits neste cubo, denotado por $b$, é
 configurável pelo usuário e é geralmente chamado de \emph{largura} do estado;
 esta, por sua vez, é dividida em $r + c$ bits, chamados respectivamente de
@@ -244,7 +217,7 @@ algébricos.
 \item $\rho : A[x][y][z] \longleftarrow A[x][y][z - (t + 1)(t + 2)/2],
     \begin{pmatrix} 0 & 1 \\ 2 & 3 \end{pmatrix} ^{t}
     \begin{pmatrix} 1 \\ 0 \end{pmatrix}
-    = \begin{pmatrix} x \\ y \end{pmatrix} $ em $GF(5)^{2 \times 2}$
+      = \begin{pmatrix} x \\ y \end{pmatrix} $ em ${GF(5)} ^{2 \times 2}$
     \begin{flushright}
         para $0 \leq t < 24$, ou $t = -1$ se $x = y = 0$.
     \end{flushright}
@@ -281,7 +254,7 @@ reduzido.
 A etapa $\pi$ é uma transposição das raias, que provê difusão a longo prazo.
 Esta etapa mistura bits alinhados horizontalmente e verticalmente de modo que
 a criptoanálise diferencial seja dificultada, pois do contrário, suas trilhas
-poderiam ser simplificadas, de acordo com \cite{KeccakDC}.
+poderiam ser simplificadas, de acordo com~\cite{KeccakDC}.
 
 \item $\chi : A[x] \longleftarrow A[x] + (A[x + 1] + 1) \cdot A[x + 2]$
 
@@ -310,14 +283,14 @@ etapas $\theta$ e $\chi$ para todas as raias depois de apenas uma rodada.
 
 \item A permutação \textsc{Keccak}$-p[b, n_r]$ consiste de $n_r$ iterações
 de rodadas $R$ sobre um estado de largura $b$. A permutação
-\textsc{Keccak}$-f$, definida em \cite{KeccakReference}, apenas é uma
+\textsc{Keccak}$-f$, definida em~\cite{KeccakReference}, apenas é uma
 especialização da família acima, onde o número de rodadas deve ser
 correlacionado à profundidade do vetor de estados: $n_r = 12 + 2 \cdot \ell$.
 Então, a permutação \textsc{Keccak}$-p[1600, 24]$, que define as seis funções
 SHA-3, é equivalente $(\stackrel{\Delta}{=})$ a \textsc{Keccak}$-f[1600]$.
 Apenas existe uma diferença na indexação das rodadas das duas permutações.
 
-\item \label{f} Uma construção esponja é um modo de operação, baseado em uma
+\item\label{f} Uma construção esponja é um modo de operação, baseado em uma
 permutação de tamanho fixo e uma regra de preenchimento (\emph{padding}), que
 constrói uma função responsável por mapear uma entrada de tamanho qualquer
 para uma saída de tamanho desejável. Tal função é apropriadamente chamada de
@@ -334,7 +307,7 @@ dividida em blocos de tamanho $r$, denotados $M_r$. Os $b$ bits de cada estado
 são inicializados com zero e a construção procede à execução, em duas fases
 separadas.
 
-Na fase de absorção (\emph{absorbing}), os blocos $M_r$ são `'\verb!XOR!ados`'
+Na fase de absorção (\emph{absorbing}), os blocos $M_r$ são ``\verb!XOR!ados''
 com os primeiros $r$ bits do estado atual, intercalados com aplicações da
 permutação $f$. Quando todos os blocos $M_r$ são processados, a esponja passa
 para a fase de compressão (\emph{squeezing}), onde os primeiros $r$ bits do
@@ -351,7 +324,7 @@ preenchimento \texttt{pad10*1}. Tal função adiciona os bits
 $1 \mid\mid 0^{-m-2 \pmod{x}} \mid\mid 1$ à palavra original, onde $m$ é o
 resto da divisão inteira do tamanho da palavra pela largura $x$ da esponja.
 O asterisco no nome da função significa que é necessário adicionar tantos
-`'zeros`' quanto necessário para preencher a palavra de maneira que esta
+``zeros'' quanto necessário para preencher a palavra de maneira que esta
 seja igualmente divisível em blocos.
 
 \item Uma função \textsc{Keccak}$[c](N, d)$ opera sobre uma palavra de bits
@@ -365,7 +338,7 @@ definida como
 
 e é a base para todas as quatro funções SHA-3. A função \textsc{sponge} é a
 representação matemática dos parâmetros explicados acima e será explorada em
-\ref{i}.
+~\ref{i}.
 
 \begin{enumerate}[label=\roman*.]
 
@@ -381,7 +354,7 @@ as mensagens são sufixadas com a palavra \texttt{01}. Ou seja,
 \end{align*}
 
 \item Duas outras funções, chamadas de \emph{SHA-3 Extendable-Output Functions}
-(SHAKE, ou `'Funções de saída estendida SHA-3`'), são definidas concatenando
+(SHAKE, ou ``Funções de saída estendida SHA-3''), são definidas concatenando
 \texttt{1111} como sufixo à mensagem $M$. Para qualquer tamanho de saída $d$,
 tem-se
 \begin{align*}
@@ -392,27 +365,27 @@ tem-se
 \end{enumerate}
 
 Os bits adicionados como sufixo às mensagens servem para diferenciar entradas
-da função \textsc{Keccak}$[c]$ provenientes de SHA-3 ou SHAKE. Esta estratégia
-é chamada de separação por domínios (\emph{domain separation}).
+da função \textsc{Keccak}$[c]$ provenientes de SHA-3 ou SHAKE --- esta
+estratégia é chamada de separação por domínios (\emph{domain separation}).
 
-\item \label{i} A construção da esponja produz uma função \textsc{sponge}$[f,
+\item\label{i} A construção da esponja produz uma função \textsc{sponge}$[f,
 \texttt{pad}, r]$, onde $f$ é uma permutação de tamanho fixo, \textsc{pad} é
 a função de preenchimento, que adiciona os bits necessários para que a
 mensagem seja corretamente dividida em blocos, e $r$ é a taxa de bits da
 entrada que passará por dentro da esponja. O estado inicial da esponja é
 chamado de estado raiz, e consiste de $0^b$ bits. Uma melhor descrição da
-construção pode ser encontrada em \ref{f}.
+construção pode ser encontrada em~\ref{f}.
 
 \item Tradicionalmente, usuários de funções \emph{hash} esperam um nível de
 segurança que seja correlacionado com o tamanho da sua saída: $2^{n/2}$ para
 resistência à colisão e $2^n$ para resistência à (segunda) pré-imagem, onde
 $n$ é o tamanho da saída. Esta característica é respeitada por todas as
-funções especificadas pelo NIST. A criptoanálise em instâncias de
+funções especificadas pelo NIST --- a criptoanálise em instâncias de
 \textsc{Keccak}$-f[1600]$ mostra\footnote{como visto em
 \url{http://keccak.noekeon.org/Keccak-slides-at-NIST-Feb2013.pdf}} que, ainda
 com 8 rodadas, o número de operações necessárias para obter alguma informação
 relevante é de $2^{491}$, e $2^{1574}$ para as 24 rodadas propostas no
-documento \cite{Dworkin2015}.
+documento~\cite{Dworkin2015}.
 
 \item A convenção para interpretar palavras em base hexadecimal como palavras
 de bits, para as entradas e saídas dos algoritmos apresentados, é diferente da
@@ -432,14 +405,14 @@ para garantir sua acurácia.
 
 \section{Implementação}
 
-\begin{enumerate}[label=(\alph*)]
+\begin{enumerate}[label= (\alph*)]
 
 \item Toda a documentação referente à implementação pode ser encontrada junto ao
 próprio código, localizado em
 \href{https://github.com/zambonin/UFSC-INE5429/blob/master/keccak/keccakf1600.py}
 {\texttt{keccakf1600.py}}, no repositório fonte deste documento. Embora sua
 performance não seja competitiva, a legibilidade foi obtida omitindo constantes
-`'mágicas`', escolhendo gerá-las ao longo da execução do programa.
+``mágicas'', escolhendo gerá-las ao longo da execução do programa.
 
 \item A função \texttt{Keccak} contém três partes principais: a absorção, nas
 linhas 157--164; o preenchimento, em 166--170; e a compressão, em 172--178. A
@@ -448,10 +421,10 @@ função \texttt{keccak\_f\_1600}, por sua vez, abriga as etapas $\theta$ em
 118--121. É possível substituir facilmente a etapa assimétrica pelo vetor de
 constantes $RC$, e embora trabalhoso, adaptar o código para utilizar o vetor de
 constantes $r$ na etapa $\rho$, assim trazendo a implementação mais próxima do
-pseudocódigo apresentado em \cite{KeccakImplementation}.
+pseudocódigo apresentado em~\cite{KeccakImplementation}.
 
 \item As funções podem ser chamadas diretamente a partir de um interpretador
-após importar o código-fonte; note que a função \texttt{hex()} é exclusiva do
+após importar o código-fonte; note que a função \texttt{hex} é exclusiva de
 Python 3.5\texttt{+}; assim, usuários de outras versões podem utilizar o
 segundo método para obter o resumo em forma hexadecimal convencional. A entrada
 deve ser um vetor de bytes, facilmente criado em Python adicionado o caractere
@@ -490,7 +463,7 @@ Resultado final
 
 \section{Segurança}
 
-\begin{enumerate}[label=(\alph*)]
+\begin{enumerate}[label= (\alph*)]
 
 \item O principal argumento fundamentando a escolha do \textsc{Keccak} pelo NIST
 foi sua grande diferença em relação ao atual padrão, SHA-2. Enquanto o SHA-3 é
