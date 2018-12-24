@@ -1,6 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# pylint: disable=C0103
 
+"""primitive_root.py
+
+Helper functions used to find primitive roots modulo n, also known as
+generators of the multiplicative group of integers modulo n.
+"""
+
+from __future__ import absolute_import
 from random import randrange
 
 
@@ -47,7 +55,7 @@ def prime_factors(n):
     factors = set()
     i = 2
 
-    while i**2 <= n:
+    while i ** 2 <= n:
         if n % i == 0:
             n = n // i
             factors.add(i)

@@ -1,8 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# pylint: disable=C0103,R0902,R0913,R0914
+
+"""mt19937.py
+
+Simple class implementation for the Mersenne Twister pseudorandom number
+generator.
+"""
 
 
-class MT19937(object):
+class MT19937:
     """
     The Mersenne Twister is the most widely used pseudorandom number generator
     (PRNG). The common version is based on the Mersenne prime 2^19937 - 1,
@@ -14,6 +21,7 @@ class MT19937(object):
     And the reference C code:
     http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/MT2002/CODES/mt19937ar.c
     """
+
     def __init__(self, seed, w, n, m, r, a, u, d, s, b, t, c, l, f):
         """
         Initializes the MT19937 object with the following attributes:
@@ -41,7 +49,7 @@ class MT19937(object):
         self.mt = [None] * n
         self.index = n + 1
         self.lower_mask = (1 << r) - 1
-        self.upper_mask = self.lowest_n_bits(~(self.lower_mask), w)
+        self.upper_mask = lowest_n_bits(~(self.lower_mask), w)
         self.w = w
         self.n = n
         self.m = m
@@ -57,20 +65,6 @@ class MT19937(object):
         self.f = f
         self.seed_init(seed)
 
-    def lowest_n_bits(self, num, n_bits):
-        """
-        Utility function that creates a 0x111... mask and applies it to the
-        desired number.
-
-        Args:
-            num: the number to be analyzed.
-            n_bits: number of bits to be retrieved.
-
-        Returns:
-            The lowest n bits of `num`.
-        """
-        return num & (2**n_bits - 1)
-
     def seed_init(self, seed):
         """
         Creates a vector of `n` integers to be used as the state sequence from
@@ -85,8 +79,9 @@ class MT19937(object):
         self.mt[0] = seed
         for i in range(1, self.n):
             prev = self.mt[i - 1]
-            self.mt[i] = self.lowest_n_bits(
-                self.f * (prev ^ (prev >> (self.w - 2)) + i), self.w)
+            self.mt[i] = lowest_n_bits(
+                self.f * (prev ^ (prev >> (self.w - 2)) + i), self.w
+            )
 
     def generate(self):
         """
@@ -99,15 +94,15 @@ class MT19937(object):
         if self.index >= self.n:
             self.twist()
 
-        y = self.mt[self.index]
-        y ^= ((y >> self.u) & self.d)
-        y ^= ((y << self.s) & self.b)
-        y ^= ((y << self.t) & self.c)
-        y ^= (y >> self.l)
+        _y = self.mt[self.index]
+        _y ^= (_y >> self.u) & self.d
+        _y ^= (_y << self.s) & self.b
+        _y ^= (_y << self.t) & self.c
+        _y ^= _y >> self.l
 
         self.index += 1
 
-        return self.lowest_n_bits(y, self.w)
+        return lowest_n_bits(_y, self.w)
 
     def twist(self):
         """
@@ -115,8 +110,9 @@ class MT19937(object):
         recurrence relation.
         """
         for i in range(self.n):
-            x = ((self.mt[i] & self.upper_mask) +
-                 (self.mt[(i + 1) % self.n] & self.lower_mask))
+            x = (self.mt[i] & self.upper_mask) + (
+                self.mt[(i + 1) % self.n] & self.lower_mask
+            )
             xA = x >> 1
 
             if (x % 2) == 0:
@@ -125,3 +121,18 @@ class MT19937(object):
             self.mt[i] = self.mt[(i + self.m) % self.n] ^ xA
 
         self.index = 0
+
+
+def lowest_n_bits(num, n_bits):
+    """
+    Utility function that creates a 0x111... mask and applies it to the
+    desired number.
+
+    Args:
+        num: the number to be analyzed.
+        n_bits: number of bits to be retrieved.
+
+    Returns:
+        The lowest n bits of `num`.
+    """
+    return num & (2 ** n_bits - 1)

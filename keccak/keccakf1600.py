@@ -1,5 +1,6 @@
-#!/usr/bin/python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# pylint: disable=C0103,R0914
 
 """keccakf1600.py
 
@@ -96,7 +97,7 @@ def keccak_f_1600(state):
     for x in range(5):
         for y in range(5):
             i = 8 * (x + 5 * y)
-            A[x][y] = load64(state[i:i + 8])
+            A[x][y] = load64(state[i : i + 8])
 
     R = 1
     for _ in range(24):
@@ -118,12 +119,12 @@ def keccak_f_1600(state):
         for j in range(7):
             R = ((R << 1) ^ ((R >> 7) * 0x71)) % 256
             if R & 2:
-                A[0][0] ^= (1 << ((1 << j) - 1))
+                A[0][0] ^= 1 << ((1 << j) - 1)
 
     for x in range(5):
         for y in range(5):
             i = 8 * (x + 5 * y)
-            state[i:i + 8] = store64(A[x][y])
+            state[i : i + 8] = store64(A[x][y])
 
     return state
 

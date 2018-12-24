@@ -1,8 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# pylint: disable=C0103
+
+"""rsa.py
+
+Simple class implementation for the RSA public-key cryptosystem.
+"""
 
 
-class RSA(object):
+class RSA:
     """
     RSA is one of the first practical public-key cryptosystems. The encryption
     key is public and the decryption key is secret. This asymmetry is based on
@@ -14,6 +20,7 @@ class RSA(object):
 
     A simple explanation for RSA: http://math.stackexchange.com/a/20193
     """
+
     def __init__(self, p, q):
         """
         Initializes the RSA object with the following attributes:
@@ -39,49 +46,13 @@ class RSA(object):
         self.n = self.p * self.q
         self.phi_n = (self.p - 1) * (self.q - 1)
         self.e = 65537
-        self.d = self.inv_mod(self.e, self.phi_n)
+        self.d = inv_mod(self.e, self.phi_n)
 
     def __str__(self):
         """Pretty-prints the attributes from the RSA object."""
         return "Your public key is {}.\nYour private key is {}.".format(
-            (self.e, self.n), (self.d, self.n))
-
-    def extended_gcd(self, a, b):
-        """
-        The extended Euclidean algorithm computes `gcd(a, b)` and the integers
-        `x` and `y` on the Bézout's identity (ax + by = gcd(a, b)).
-
-        Args:
-            a, b: two integers.
-
-        Returns:
-            `gcd(a, b)`, `x` and `y` such that the above identity is true.
-        """
-        gcd, remainder = abs(a), abs(b)
-        x, y, old_x, old_y = 1, 1, 0, 0
-
-        while remainder:
-            gcd, (quotient, remainder) = remainder, divmod(gcd, remainder)
-            old_x, x = x - quotient * old_x, old_x
-            old_y, y = y - quotient * old_y, old_y
-
-        return gcd, x, y
-
-    def inv_mod(self, a, m):
-        """
-        The modular multiplicative inverse of an integer `a` modulo `m` is an
-        integer `x` such that a*x ≡ 1 (mod m). It the multiplicative inverse in
-        the ring of integers modulo `m`.
-
-        Args:
-            a: the number to be inverted.
-            m: the integer for the modulo operator.
-
-        Returns:
-            a^(-1) (mod m).
-        """
-        g, x, y = self.extended_gcd(a, m)
-        return int(x % m)
+            (self.e, self.n), (self.d, self.n)
+        )
 
     def encrypt(self, message):
         """
@@ -97,9 +68,10 @@ class RSA(object):
         """
         if isinstance(message, str):
             return [pow(ord(i), self.e, self.n) for i in message]
-        elif isinstance(message, int):
+        if isinstance(message, int):
             assert message < self.n, "Integer has to be smaller than `n`."
             return pow(message, self.e, self.n)
+        return None
 
     def decrypt(self, message):
         """
@@ -113,5 +85,45 @@ class RSA(object):
         """
         if isinstance(message, list):
             return "".join(chr(pow(i, self.d, self.n)) for i in message)
-        elif isinstance(message, int):
+        if isinstance(message, int):
             return pow(message, self.d, self.n)
+        return None
+
+
+def extended_gcd(a, b):
+    """
+    The extended Euclidean algorithm computes `gcd(a, b)` and the integers
+    `x` and `y` on the Bézout's identity (ax + by = gcd(a, b)).
+
+    Args:
+        a, b: two integers.
+
+    Returns:
+        `gcd(a, b)`, `x` and `y` such that the above identity is true.
+    """
+    gcd, remainder = abs(a), abs(b)
+    x, y, old_x, old_y = 1, 1, 0, 0
+
+    while remainder:
+        gcd, (quotient, remainder) = remainder, divmod(gcd, remainder)
+        old_x, x = x - quotient * old_x, old_x
+        old_y, y = y - quotient * old_y, old_y
+
+    return gcd, x, y
+
+
+def inv_mod(a, m):
+    """
+    The modular multiplicative inverse of an integer `a` modulo `m` is an
+    integer `x` such that a*x ≡ 1 (mod m). It is the multiplicative inverse in
+    the ring of integers modulo `m`.
+
+    Args:
+        a: the number to be inverted.
+        m: the integer for the modulo operator.
+
+    Returns:
+        a^(-1) (mod m).
+    """
+    _, x, _ = extended_gcd(a, m)
+    return int(x % m)

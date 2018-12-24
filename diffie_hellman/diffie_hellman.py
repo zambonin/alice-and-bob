@@ -1,8 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""diffie_hellman.py
 
-class DiffieHellman(object):
+Simple class implementation for the Diffie-Hellman key exchange.
+"""
+
+
+class DiffieHellman:
     """
     Diffie–Hellman key exchange is a method of securely exchanging
     cryptographic keys over a public channel; it should provide enough
@@ -14,6 +19,7 @@ class DiffieHellman(object):
 
     A simple explanation for DH: http://security.stackexchange.com/a/45971
     """
+
     def __init__(self, private, p, g):
         """
         Initializes the DiffieHellman object with the following attributes:
@@ -25,16 +31,19 @@ class DiffieHellman(object):
             g: a primitive root modulo p, called the base.
         """
         self.private = private
-        self.p = p
-        self.g = g
+        self._p = p
+        self._g = g
 
     def __str__(self):
         """Pretty-prints the attributes from the Diffie-Hellman object."""
-        return ("Private key:    {}\n"
-                "Prime number:   {}\n"
-                "Primitive root: {}\n"
-                "Public key:     {}".format(self.p, self.g, self.private,
-                                            self.gen_public_key()))
+        return (
+            "Private key:    {}\n"
+            "Prime number:   {}\n"
+            "Primitive root: {}\n"
+            "Public key:     {}".format(
+                self._p, self._g, self.private, self.gen_public_key()
+            )
+        )
 
     def gen_public_key(self):
         """
@@ -46,7 +55,7 @@ class DiffieHellman(object):
         Returns:
             g**a mod p -- the public key for this party.
         """
-        return pow(self.g, self.private, self.p)
+        return pow(self._g, self.private, self._p)
 
     def gen_shared_secret(self, key):
         """
@@ -61,4 +70,4 @@ class DiffieHellman(object):
             (g**a mod p)**b mod p = g**ab mod p = g**ba mod p -- which
             shows that the shared secret is indeed the same.
         """
-        return pow(key, self.private, self.p)
+        return pow(key, self.private, self._p)

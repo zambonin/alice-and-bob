@@ -1,13 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import random
+"""key_exchange.py
+
+Test script for Diffie-Hellman implemented within this folder.
+"""
+
+from __future__ import absolute_import
+from random import getrandbits
 from diffie_hellman import DiffieHellman
 
-XA, XB = random.getrandbits(512), random.getrandbits(512)
+XA, XB = getrandbits(512), getrandbits(512)
 
-for i in [(589559306225789680238449, 99848060646461381236408),
-          (1076504068900685093590721, 594761277746183138644459)]:
+for i in [
+    (589559306225789680238449, 99848060646461381236408),
+    (1076504068900685093590721, 594761277746183138644459),
+]:
 
     alice = DiffieHellman(XA, *i)
     bob = DiffieHellman(XB, *i)

@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# pylint: disable=C0103
 
+"""primality_test.py
+
+Simple implementations for the Fermat and Miller-Rabin primality tests.
+"""
+
+from __future__ import absolute_import
 from random import randrange
 
 
@@ -39,6 +46,7 @@ def miller_rabin(n, k):
     Returns:
         True means "probably prime", whereas False means "composite".
     """
+
     def composite(a, s, d, n):
         """
         Checks if a given number is composite through modular arithmetic.
@@ -60,7 +68,7 @@ def miller_rabin(n, k):
         x = pow(a, d, n)
         if x == 1:
             return True
-        for i in range(s):
+        for _ in range(s):
             if x == n - 1:
                 return True
             x = pow(x, 2, n)

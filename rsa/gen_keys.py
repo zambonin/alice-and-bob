@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# pylint: disable=C0103
 
+"""gen_keys.py
+
+Simple generator for RSA keys, that is, prime numbers that are large enough.
+"""
+
+from __future__ import absolute_import
 from datetime import datetime
 from random import getrandbits, randrange
 from rsa import RSA
@@ -29,7 +36,7 @@ def fermat(n, k):
     return all(pow(randrange(2, n - 1), n - 1, n) == 1 for _ in range(k))
 
 
-nbits = [2**i for i in range(6, 13)]
+nbits = [2 ** i for i in range(6, 13)]
 start = datetime.now()
 
 for i in nbits:
