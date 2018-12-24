@@ -25,7 +25,9 @@ def ngram_frequency(_n, text):
 
 def show_output(freq, num, path):
     """Create graphs for n-gram groupings."""
-    ord_dict = OrderedDict(sorted(freq.items(), key=lambda k: k[1], reverse=True)[:num])
+    ord_dict = OrderedDict(
+        sorted(freq.items(), key=lambda k: k[1], reverse=True)[:num]
+    )
 
     try:
         size = list(range(len(ord_dict)))
@@ -35,7 +37,9 @@ def show_output(freq, num, path):
         plt.autoscale()
         plt.savefig(path, bbox_inches="tight")
     except NameError:
-        print("Common n-grams where n = {}:".format(len(list(ord_dict.keys())[0])))
+        print(
+            "Common n-grams where n = {}:".format(len(list(ord_dict.keys())[0]))
+        )
         for i in ord_dict:
             step = max(ord_dict[i] for i in ord_dict) / len(ord_dict)
             bars = "▇" * int(ord_dict[i] / step)

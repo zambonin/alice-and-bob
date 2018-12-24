@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# pylint: disable=C0330
 
 """key_exchange.py
 
@@ -13,8 +14,8 @@ from diffie_hellman import DiffieHellman
 XA, XB = getrandbits(512), getrandbits(512)
 
 for i in [
-    (589559306225789680238449, 99848060646461381236408),
-    (1076504068900685093590721, 594761277746183138644459),
+    (589_559_306_225_789_680_238_449, 99_848_060_646_461_381_236_408),
+    (1_076_504_068_900_685_093_590_721, 594_761_277_746_183_138_644_459),
 ]:
 
     alice = DiffieHellman(XA, *i)
